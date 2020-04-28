@@ -10,12 +10,13 @@
             integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
             crossorigin="anonymous"
         />
+	<base href="/shorturls/">
     </head>
 
     <body>
         <div class="container">
             <h1>URL Shrinker</h1>
-            <form action="/shortenUrl" method="POST" class="form-inline my-4">
+            <form action="./shortenUrl" method="POST" class="form-inline my-4">
                 <label for="fullurl" class="sr-only">URL</label>
                 <input
                     type="text"
@@ -43,12 +44,12 @@
                     <% shortUrls.forEach(shortUrl => { %>
                     <tr>
                         <td>
-                            <a href="<%= shortUrl.fullurl %>"
+                            <a href="<%= shortUrl.fullurl %>" target="_blank"
                                 ><%= shortUrl.fullurl %></a
                             >
                         </td>
                         <td>
-                            <a href="<%= shortUrl.shorturl %>"
+                            <a href="<%= shortUrl.shorturl %>" target="_blank"
                                 ><%= shortUrl.shorturl %></a
                             >
                         </td>
