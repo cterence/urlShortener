@@ -1,0 +1,22 @@
+services:
+  app:
+    build: .
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=postgres
+      - PGPASSWORD=password
+      - PGDATABASE=urlshortener
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=urlshortener
