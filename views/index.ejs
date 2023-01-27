@@ -1,84 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>URL Shortener</title>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"
+        ></script>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>URL Shortener</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+            function copyToClipboard(id) {
+                navigator.clipboard.writeText(document.getElementById(id).href);
+                setTimeout(() => $(`#icon_${id}`).tooltip("hide"), 1000);
+            }
+        </script>
+    </head>
 
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-        function copyToClipboard(id) {
-            navigator.clipboard.writeText(document.getElementById(id).href);
-            setTimeout(() => $(`#icon_${id}`).tooltip('hide'), 1000)
-        }
-    </script>
-</head>
+    <body>
+        <div class="container">
+            <h1>URL Shortener for Padok !</h1>
+            <form action="shortenUrl" method="POST" class="form-inline my-4">
+                <label for="fullurl" class="sr-only">URL</label>
+                <input
+                    type="text"
+                    class="form-control col"
+                    name="fullUrl"
+                    id="fullUrl"
+                    placeholder="URL"
+                    required
+                />
+                <input
+                    type="submit"
+                    class="btn btn-success ml-2"
+                    value="Shrink"
+                />
+            </form>
 
-<body>
-    <div class="container">
-        <h1>URL Shortener</h1>
-        <form action="shortenUrl" method="POST" class="form-inline my-4">
-            <label for="fullurl" class="sr-only">URL</label>
-            <input type="text" class="form-control col" name="fullUrl" id="fullUrl" placeholder="URL" required />
-            <input type="submit" class="btn btn-success ml-2" value="Shrink" />
-        </form>
-
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Full URL</th>
-                        <th>Short URL</th>
-                        <th>Clicks</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% shortUrls.forEach(shortUrl => { %>
-                    <tr>
-                        <td>
-                            <a href="<%= shortUrl.fullurl %>" target="_blank"><%= shortUrl.fullurl %></a>
-                        </td>
-                        <td>
-                            <a href="<%= shortUrl.shorturl %>" id="<%= shortUrl.shorturl %>"
-                                target="_blank"><%= shortUrl.shorturl %></a>
-                            <img id="icon_<%= shortUrl.shorturl %>" style="cursor: pointer;" data-toggle="tooltip"
-                                data-placement="top" title="Copied" data-trigger="click"
-                                src="https://img.icons8.com/material-rounded/24/000000/copy-2.png"
-                                onclick="copyToClipboard('<%= shortUrl.shorturl %>')" />
-                        </td>
-                        <td>
-                            <%= shortUrl.clicks %>
-                        </td>
-                        <td>
-                            <a href="delete/<%= shortUrl.shorturl %>"><svg class="bi bi-trash" width="1em" height="1em"
-                                    viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z" />
-                                    <path fill-rule="evenodd"
-                                        d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                                        clip-rule="evenodd" /></svg></a>
-                        </td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Full URL</th>
+                            <th>Short URL</th>
+                            <th>Clicks</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% shortUrls.forEach(shortUrl => { %>
+                        <tr>
+                            <td>
+                                <a
+                                    href="<%= shortUrl.fullurl %>"
+                                    target="_blank"
+                                    ><%= shortUrl.fullurl %></a
+                                >
+                            </td>
+                            <td>
+                                <a
+                                    href="<%= shortUrl.shorturl %>"
+                                    id="<%= shortUrl.shorturl %>"
+                                    target="_blank"
+                                    ><%= shortUrl.shorturl %></a
+                                >
+                                <img
+                                    id="icon_<%= shortUrl.shorturl %>"
+                                    style="cursor: pointer"
+                                    data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="Copied"
+                                    data-trigger="click"
+                                    src="https://img.icons8.com/material-rounded/24/000000/copy-2.png"
+                                    onclick="copyToClipboard('<%= shortUrl.shorturl %>')"
+                                />
+                            </td>
+                            <td><%= shortUrl.clicks %></td>
+                            <td>
+                                <a href="delete/<%= shortUrl.shorturl %>"
+                                    ><svg
+                                        class="bi bi-trash"
+                                        width="1em"
+                                        height="1em"
+                                        viewBox="0 0 16 16"
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"
+                                        />
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                            clip-rule="evenodd"
+                                        /></svg
+                                ></a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</body>
-
+    </body>
 </html>

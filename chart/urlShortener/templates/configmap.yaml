@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: initdb
+data:
+    init.sql: |
+        CREATE TABLE urls (
+          fullurl VARCHAR,
+          shorturl VARCHAR,
+          clicks INT DEFAULT 0
+        )

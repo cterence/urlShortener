@@ -1,5 +1,6 @@
 services:
-  app:
+  urlshortener:
+    image: terencecpadok/urlshortener
     build: .
     environment:
       - PGHOST=db

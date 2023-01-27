@@ -114,3 +114,7 @@ dist
 .yarn/build-state.yml
 .pnp.*
 .prettierrc
+
+
+# Ignore DevSpace cache and log folder
+.devspace/
