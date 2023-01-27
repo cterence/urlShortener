@@ -1,0 +1,17 @@
+db:
+    environment:
+        POSTGRES_DB: urlshortener
+        POSTGRES_PASSWORD: password
+    repository:
+        image: postgres
+        tag: latest
+urlshortener:
+    environment:
+        PGDATABASE: urlshortener
+        PGHOST: urlshortener-db
+        PGPASSWORD: password
+        PGPORT: "5432"
+        PGUSER: postgres
+    repository:
+        image: terencecpadok/urlshortener
+        tag: ""
