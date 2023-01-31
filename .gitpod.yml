@@ -1,5 +1,7 @@
 tasks:
-    - init: docker compose build
+    - init: |
+        npm install
+        docker compose build
       command: docker compose up
 
 ports:
