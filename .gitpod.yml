@@ -12,8 +12,8 @@ ports:
 vscode:
     extensions:
         - esbenp.prettier-vscode
-        - redhat.vscode-yaml
 
+# TODO: show prebuild (runs init tasks on each master commit)
 github:
     prebuilds:
         master: true
